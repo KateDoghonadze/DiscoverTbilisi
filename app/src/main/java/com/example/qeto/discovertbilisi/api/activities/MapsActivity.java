@@ -1,19 +1,36 @@
 package com.example.qeto.discovertbilisi.api.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.qeto.discovertbilisi.R;
+import com.example.qeto.discovertbilisi.api.models.PictureModel;
+import com.example.qeto.discovertbilisi.api.models.PlaceModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity
+        implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.InfoWindowAdapter {
 
+    InfoWindowFragment window = new InfoWindowFragment();
     private GoogleMap mMap;
+
+    public PlaceModel placeModel;
+    public PictureModel pictureModel;
+    public static final String Description = "„ქართვლის დედა“[1] — მონუმენტური ქანდაკება თბილისში, რომელიც ქალაქის ერთ-ერთი სიმბოლო გახდა. მონუმენტის ავტორია ქართველი მოქანდაკე ელგუჯა ამაშუკელი, რომელსაც 1966 წელს ამ ქანდაკებისთვის მიენიჭა შოთა რუსთაველის სახელობის სახელმწიფო პრემია.[1] ქანდაკება სოლოლაკის გორაზე 1958 წელს აღიმართა ქალაქის 1500 წლისთავთან დაკავშირებით. თავდაპირველი გადაწყვეტილების თანახმად, ხის ალეგორიული ქანდაკება დედაქალაქს დროებით დაამშვენებდა, თუმცა მოგვიანებით ეს გადაწყვეტილება შეიცვალა. ამის გამო ხის ფაქტურა 1963 წელს ალუმინით დაიფარა, რათა ქანდაკება არ დაზიანებულიყო. 1997 წელს კი ძველი ქანდაკება ახლით შეიცვალა. 20 მეტრის სიმაღლის ალუმინის ქართულ ეროვნულ სამოსში ჩაცმული ქალის ქანდაკების ავტორია ელგუჯა ამაშუკელი. „ქართვლის დედა“ არის ქართული ეროვნული ხასიათის სიმბოლო: ქანდაკებას ცალ ხელში ღვინის თასი უჭირავს მოყვართათვის, მეორეში კი ხმალი მტერთათვის. ქანდაკების ძირში იშლება ხედი თბილისის ბოტანიკურ ბაღზე, აგრეთვე ბოტანიკური ბაღის ფარგლებში შესაძლებელია მდინარე წავკისისწყლის აღბეჭდვა, სადაც სამი ხიდია გადაგდებული.[2]";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +40,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        pictureModel = new PictureModel(1, "/drawable/kartlis_deda.jpg", "ქართლის დედა");
+        placeModel = new PlaceModel(1, "ქართლის დედა", 41.688079, 44.807602, pictureModel, "", Description, null, null);
     }
 
 
@@ -38,10 +58,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(placeModel.mLatitude, placeModel.mLongitude))
+                .title(placeModel.Title));
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setInfoWindowAdapter(this);
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.showInfoWindow();
+        return true;
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        View v = getLayoutInflater().inflate(R.layout.fragment_info_window, null);
+
+        // Getting the position from the marker
+        LatLng latLng = marker.getPosition();
+
+        TextView title = (TextView) v.findViewById(R.id.textViewTitle);
+        TextView description = (TextView) v.findViewById(R.id.textViewDescription);
+        ImageView imageView = (ImageView) v.findViewById(R.id.locationImageView);
+        imageView.setImageResource(R.drawable.kartlis_deda);
+        title.setText("ქართლის დედა");
+
+        description.setText("Kartlis Deda[1](Georgian: ქართლის დედა; Mother of a Kartli or Mother of a Georgian), is a monument in Georgia’s capital Tbilisi.\n" +
+                "\n" +
+                "The statue was erected on the top of Sololaki hill in 1958, the year Tbilisi celebrated its 1500th anniversary. Prominent Georgian sculptor Elguja Amashukeli designed the twenty-metre aluminium figure of a woman in Georgian national dress. She symbolizes the Georgian national character: in her left hand she holds a bowl of wine to greet those who come as friends, and in her right hand is a sword for those who come as enemies.[2]");
+        return v;
     }
 }
