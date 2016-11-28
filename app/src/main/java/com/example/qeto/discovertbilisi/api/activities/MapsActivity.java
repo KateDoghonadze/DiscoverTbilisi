@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentContainer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
@@ -21,18 +19,14 @@ import com.example.qeto.discovertbilisi.R;
 import com.example.qeto.discovertbilisi.api.models.PictureModel;
 import com.example.qeto.discovertbilisi.api.models.PlaceModel;
 import com.example.qeto.discovertbilisi.api.models.TypeModel;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -51,27 +45,18 @@ public class MapsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         setSupportActionBar();
-        mapView = (View)findViewById(R.id.map);
-                pictureModel = new PictureModel(1, "/drawable/kartlis_deda.jpg", "ქართლის დედა");
-        typeModel = new TypeModel(1, "ძეგლი", null);
+        mapView = findViewById(R.id.map);
+        pictureModel = new PictureModel(1, "/drawable/kartlis_deda.jpg", "ქართლის დედა");
+        typeModel = new TypeModel(1, "ძეგლი", null,1);
         placeModel = new PlaceModel(1, "ქართლის დედა", 41.688079, 44.807602, pictureModel, "", Description, null, null, 1, false);
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -87,7 +72,8 @@ public class MapsActivity extends AppCompatActivity
         }
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(placeModel.mLatitude, placeModel.mLongitude))
-                .title(placeModel.Title));
+                .title(placeModel.Title)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.statue_icon)));
         mMap.setMyLocationEnabled(true);
         mMap.setOnMarkerClickListener(this);
         mMap.setInfoWindowAdapter(this);
@@ -113,11 +99,10 @@ public class MapsActivity extends AppCompatActivity
         ImageView imageView;
         View v = getLayoutInflater().inflate(R.layout.fragment_info_window, null);
 
-        // Getting the position from the marker
         LatLng latLng = marker.getPosition();
         double screen_height = (double) mapView.getHeight();
         Point mappoint = mMap.getProjection().toScreenLocation(latLng);
-        mappoint.set(mappoint.x, mappoint.y-500);
+        mappoint.set(mappoint.x, mappoint.y - (int) getHeight() / 2);
         mMap.animateCamera(CameraUpdateFactory.newLatLng(mMap.getProjection().fromScreenLocation(mappoint)));
         title = (TextView) v.findViewById(R.id.textViewTitle);
         description = (TextView) v.findViewById(R.id.textViewDescription);
@@ -146,12 +131,12 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Intent i = new Intent(this,LocationInfoActivity.class);
-        i.putExtra("PlaceInfo",placeModel);
+        Intent i = new Intent(this, LocationInfoActivity.class);
+        i.putExtra("PlaceInfo", placeModel);
         startActivity(i);
     }
 
-    public float getHeight(){
+    public float getHeight() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);

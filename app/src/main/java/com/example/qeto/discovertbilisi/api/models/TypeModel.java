@@ -11,11 +11,21 @@ public class TypeModel implements Parcelable {
     public int ID;
     public String Name;
     public String iconUrl;
+    public int languageID;
 
-    public TypeModel(int ID, String name, String iconUrl) {
+    public TypeModel(int ID, String name, String iconUrl, int languageID) {
         this.ID = ID;
         Name = name;
         this.iconUrl = iconUrl;
+        this.languageID = languageID;
+    }
+
+    public int getLanguageID() {
+        return languageID;
+    }
+
+    public void setLanguageID(int languageID) {
+        this.languageID = languageID;
     }
 
     public int getID() {
