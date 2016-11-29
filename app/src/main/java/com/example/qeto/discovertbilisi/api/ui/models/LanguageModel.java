@@ -1,4 +1,4 @@
-package com.example.qeto.discovertbilisi.api.models;
+package com.example.qeto.discovertbilisi.api.ui.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

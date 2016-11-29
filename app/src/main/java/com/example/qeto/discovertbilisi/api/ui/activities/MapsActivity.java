@@ -1,4 +1,4 @@
-package com.example.qeto.discovertbilisi.api.activities;
+package com.example.qeto.discovertbilisi.api.ui.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,11 +14,14 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.qeto.discovertbilisi.R;
-import com.example.qeto.discovertbilisi.api.models.PictureModel;
-import com.example.qeto.discovertbilisi.api.models.PlaceModel;
-import com.example.qeto.discovertbilisi.api.models.TypeModel;
+import com.example.qeto.discovertbilisi.api.Service.LanguagesApi;
+import com.example.qeto.discovertbilisi.api.ui.models.LanguageModel;
+import com.example.qeto.discovertbilisi.api.ui.models.PictureModel;
+import com.example.qeto.discovertbilisi.api.ui.models.PlaceModel;
+import com.example.qeto.discovertbilisi.api.ui.models.TypeModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,6 +30,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -78,6 +87,12 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(this);
         mMap.setInfoWindowAdapter(this);
         mMap.setOnInfoWindowClickListener(this);
+
+
+
+        LanguagesApi redditApi = new LanguagesApi();
+        redditApi.getLanguages(callback);
+
     }
 
     @Override
@@ -144,4 +159,20 @@ public class MapsActivity extends AppCompatActivity
         int height = size.y;
         return height;
     }
+
+
+
+
+
+    Callback<LanguageModel> callback = new Callback<LanguageModel>() {
+        @Override
+        public void onResponse(Call<LanguageModel> call, Response<LanguageModel> response) {
+int k = 0;
+        }
+
+        @Override
+        public void onFailure(Call<LanguageModel> call, Throwable t) {
+            Toast.makeText(MapsActivity.this, "Something went wrong :/", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

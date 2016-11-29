@@ -1,4 +1,4 @@
-package com.example.qeto.discovertbilisi.api.activities;
+package com.example.qeto.discovertbilisi.api.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.qeto.discovertbilisi.R;
-import com.example.qeto.discovertbilisi.api.models.PlaceModel;
+import com.example.qeto.discovertbilisi.api.ui.models.PlaceModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
