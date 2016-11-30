@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.qeto.discovertbilisi.R;
 import com.example.qeto.discovertbilisi.api.ui.models.PlaceModel;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +42,7 @@ public class LocationInfoActivity extends AppCompatActivity {
     }
     private void setPlaceModel(PlaceModel placeModel){
         title.setText(placeModel.getTitle());
-        image.setImageResource(R.drawable.kartlis_deda);
+        Picasso.with(this).load(placeModel.getBasicPicture().getUrl()).into(image);
         description.setText(placeModel.getDescription());
         description.setMovementMethod(new ScrollingMovementMethod());
     }

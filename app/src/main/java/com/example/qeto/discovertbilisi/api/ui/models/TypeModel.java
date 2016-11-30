@@ -3,6 +3,8 @@ package com.example.qeto.discovertbilisi.api.ui.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by QETO on 11/27/2016.
  */
@@ -12,6 +14,7 @@ public class TypeModel implements Parcelable {
     public String Name;
     public String iconUrl;
     public int languageID;
+    public List<PlaceModel> Places;
 
     public TypeModel(int ID, String name, String iconUrl, int languageID) {
         this.ID = ID;
@@ -20,6 +23,13 @@ public class TypeModel implements Parcelable {
         this.languageID = languageID;
     }
 
+    public List<PlaceModel> getPlaces() {
+        return Places;
+    }
+
+    public void setPlaces(List<PlaceModel> places) {
+        Places = places;
+    }
     public int getLanguageID() {
         return languageID;
     }

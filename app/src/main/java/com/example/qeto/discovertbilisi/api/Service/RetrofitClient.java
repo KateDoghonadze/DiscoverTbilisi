@@ -1,5 +1,7 @@
 package com.example.qeto.discovertbilisi.api.Service;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -11,28 +13,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static final String BASE_URL = "http://jsonstub.com/";
-    private IRetrofitService service;
+    private static Retrofit service=null;
 
-    public RetrofitClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
 
-        OkHttpClient client = httpClient.build();
+        public static Retrofit getClient() {
+            if (service == null) {
 
-        Retrofit restAdapter = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS);
+                httpClient.addInterceptor(logging);
 
-        service = restAdapter.create(IRetrofitService.class);
+                service = new Retrofit.Builder()
+                        .client(httpClient.build())
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+//                    .addConverterFactory(new MixedConverterFactory(GsonConverterFactory.create(), SimpleXmlConverterFactory.create()))
+                        .build();
+            }
+            return service;
+        }
     }
-
-
-    public IRetrofitService getService() {
-        return service;
-    }
-
-}
