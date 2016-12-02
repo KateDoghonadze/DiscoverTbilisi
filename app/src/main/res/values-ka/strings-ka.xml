@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">აღმოაჩინე თბილისი</string>
+    <string name="title_activity_maps">აღმოაჩინე თბილისი</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="settings">პარამეტრები</string>
+    <string name="change_lang_lab">ენის შეცვლა</string>
+</resources>

@@ -13,9 +13,9 @@
 
             <padding
                 android:bottom="2dp"
-                android:left="-2dp"
+                android:left="0dp"
                 android:right="2dp"
-                android:top="-2dp" />
+                android:top="0dp" />
 
             <corners android:radius="3dp" />
         </shape>
@@ -25,7 +25,6 @@
 
     <item>
         <shape>
-            <solid android:color="@color/infoWindowBackgroundColor" />
             <corners android:radius="3dp" />
         </shape>
     </item>

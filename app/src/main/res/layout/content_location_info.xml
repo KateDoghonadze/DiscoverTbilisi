@@ -10,13 +10,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.qeto.discovertbilisi.api.activities.LocationInfoActivity"
     tools:showIn="@layout/activity_location_info"
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mainTitle"/>
+        android:id="@+id/mainTitle"
+        android:textAlignment="center"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -29,6 +29,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:id="@+id/mainDescription"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:layout_gravity="center_vertical|right"/>
 
 </LinearLayout>
