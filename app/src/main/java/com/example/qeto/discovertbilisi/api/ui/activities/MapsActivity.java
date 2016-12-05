@@ -90,6 +90,7 @@ public class MapsActivity extends AppCompatActivity
         setSupportActionBar();
         mapView = findViewById(R.id.map);
         buildGoogleApiClient();
+        mGoogleApiClient.connect();
         getData();
     }
 
@@ -294,19 +295,18 @@ public class MapsActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_notification:
-                startActivityForResult(new Intent(this, SettingsActivity.class), 5);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_notification:
+//                startActivityForResult(new Intent(this, SettingsActivity.class), 5);
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//
+//    }
 }
